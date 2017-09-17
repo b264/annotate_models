@@ -548,11 +548,12 @@ module AnnotateModels
     def magic_comments_as_string(content)
       magic_comments = content.scan(magic_comment_matcher).flatten.compact
 
-      if magic_comments.any?
-        magic_comments.join + "\n"
-      else
-        ''
-      end
+      return '' unless magic_comments.any?
+      string = magic_comments.join
+      string += "\n" unless string.end_with?("\n")
+      string += "\n" unless string.end_with?("\n\n")
+      string
+
     end
 
     def remove_annotation_of_file(file_name, options = {})

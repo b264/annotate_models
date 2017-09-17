@@ -1488,7 +1488,11 @@ end
         annotate_one_file position: :before
         schema_info = AnnotateModels.get_schema_info(@klass, '== Schema Info')
 
-        expect(File.read(model_file_name)).to eq("#{magic_comment}\n\n#{schema_info}\n#{content}")
+        extra_linefeeds = String.new("\n\n")
+        extra_linefeeds.chomp! if magic_comment.end_with?("\n")
+        puts "magic_comment: #{magic_comment.inspect}"
+        puts "extra_linefeeds: #{extra_linefeeds.inspect}"
+        expect(File.read(model_file_name)).to eq("#{magic_comment}#{extra_linefeeds}#{schema_info}\n#{content}")
       end
     end
 
@@ -1500,7 +1504,11 @@ end
         annotate_one_file position: :after
         schema_info = AnnotateModels.get_schema_info(@klass, '== Schema Info')
 
-        expect(File.read(model_file_name)).to eq("#{magic_comment}\n\n#{content}\n#{schema_info}")
+        extra_linefeeds = String.new("\n\n")
+        extra_linefeeds.chomp! if magic_comment.end_with?("\n")
+        puts "magic_comment: #{magic_comment.inspect}"
+        puts "extra_linefeeds: #{extra_linefeeds.inspect}"
+        expect(File.read(model_file_name)).to eq("#{magic_comment}#{extra_linefeeds}#{content}\n#{schema_info}")
       end
     end
 
